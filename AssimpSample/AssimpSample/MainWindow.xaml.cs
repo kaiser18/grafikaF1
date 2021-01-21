@@ -30,6 +30,7 @@ namespace AssimpSample
         ///	 Instanca OpenGL "sveta" - klase koja je zaduzena za iscrtavanje koriscenjem OpenGL-a.
         /// </summary>
         World m_world = null;
+        Animation animation = null;
 
         #endregion Atributi
 
@@ -43,10 +44,12 @@ namespace AssimpSample
             // Kreiranje OpenGL sveta
             try
             {
-                m_world = new World(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "3D Models\\Ferrari"),
-                    Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "3D Models\\McLaren"),
-                    "F310.stl", "McLaren_MP4.stl", (int)openGLControl.ActualWidth, (int)openGLControl.ActualHeight, openGLControl.OpenGL);
-                
+                m_world = new World(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "3D Models\\Honda"),
+                    Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "3D Models\\Ferrari"),
+                    "HondaF13ds.3DS", "model.dae", (int)openGLControl.ActualWidth, (int)openGLControl.ActualHeight, openGLControl.OpenGL);
+
+                animation = new Animation(m_world);
+                DataContext = animation;
             }
             catch (Exception e)
             {
@@ -89,36 +92,69 @@ namespace AssimpSample
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
-            {
-                case Key.F10: this.Close(); break;
-                case Key.W: m_world.RotationX -= 5.0f; break;
-                case Key.S: m_world.RotationX += 5.0f; break;
-                case Key.A: m_world.RotationY -= 5.0f; break;
-                case Key.D: m_world.RotationY += 5.0f; break;
-                case Key.Add: m_world.SceneDistance -= 700.0f; break;
-                case Key.Subtract: m_world.SceneDistance += 700.0f; break;
-                case Key.F2:
-                    OpenFileDialog opfModel = new OpenFileDialog();
-                    bool result = (bool) opfModel.ShowDialog();
-                    if (result)
-                    {
+            if(animation.AnimationNotActive) { 
+                switch (e.Key)
+                {
+                    case Key.I:
+                        if (m_world.RotationX >= 0.0f)
+                            m_world.RotationX -= 5.0f;
+                        break;
+                    case Key.K:
+                        if (m_world.RotationX <= 90.0f)
+                            m_world.RotationX += 5.0f;
+                        break;
+                    case Key.J:
+                        m_world.RotationY -= 5.0f;
+                        break;
+                    case Key.L:
+                        m_world.RotationY += 5.0f;
+                        break;
+                    case Key.OemPlus:
+                        m_world.CameraZ -= 2.0f;
+                        break;
+                    case Key.OemMinus:
+                        m_world.CameraZ += 2.0f;
+                        break;
+                    case Key.V:
+                        animation.StartAnimation();
+                        break;
+                    case Key.F4:
+                        Application.Current.Shutdown();
+                        break;
+                    case Key.R:
+                        m_world.Restart();
+                        break;
+                }
+            }
+        }
 
-                        try
-                        {
-                            World newWorld = new World(Directory.GetParent(opfModel.FileName).ToString(),
-                                Directory.GetParent(opfModel.FileName).ToString(),
-                                Path.GetFileName(opfModel.FileName), Path.GetFileName(opfModel.FileName), (int)openGLControl.Width, (int)openGLControl.Height, openGLControl.OpenGL);
-                            m_world.Dispose();
-                            m_world = newWorld;
-                            m_world.Initialize(openGLControl.OpenGL);
-                        }
-                        catch (Exception exp)
-                        {
-                            MessageBox.Show("Neuspesno kreirana instanca OpenGL sveta:\n" + exp.Message, "GRESKA", MessageBoxButton.OK );
-                        }
-                    }
-                    break;
+        private void TranslationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (m_world != null && animation.AnimationNotActive)
+                m_world.RightTranslate = (float)translate.Value;
+        }
+
+        private void RotationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (m_world != null && animation.AnimationNotActive)
+                m_world.LeftRotate = (float)rotate.Value;
+        }
+
+        private void ColourSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (m_world != null & animation.AnimationNotActive)
+            {
+                m_world.AmbientRed = (float)sliderRed.Value;
+                m_world.AmbientGreen = (float)sliderGreen.Value;
+                m_world.AmbientBlue = (float)sliderBlue.Value;
+            }
+        }
+
+        private void ButtonClick_Restart(object sender, RoutedEventArgs e)
+        {
+            if (m_world != null && animation.AnimationNotActive)
+            {
+                m_world.Restart();
             }
         }
     }

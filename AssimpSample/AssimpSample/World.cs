@@ -14,6 +14,8 @@ using SharpGL.SceneGraph.Primitives;
 using SharpGL.SceneGraph.Quadrics;
 using SharpGL.SceneGraph.Core;
 using SharpGL;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace AssimpSample
 {
@@ -67,6 +69,28 @@ namespace AssimpSample
         /// </summary>
         private int m_height;
 
+        private enum Textures { Asphalt = 0, Metal = 1, Gravel = 2};
+        private uint[] m_textures = null;
+        private string[] m_textureImages = { "..//..//Textures//asphalt.jpg", "..//..//Textures//metal.jpg", "..//..//Textures//gravel.jpg" };
+        private int m_textureCount = Enum.GetNames(typeof(Textures)).Length;
+
+        private float m_ambientRed = 0.0f;
+        private float m_ambientGreen = 0.0f;
+        private float m_ambientBlue = 0.0f;
+
+        private float m_lightTranslate = 14.0f;
+
+        private float m_cameraX = 0.0f;
+        private float m_cameraY = 7.0f;
+        private float m_cameraZ = 15.0f;
+
+        private float m_pointZ = -12.0f;
+
+        private float m_rightTranslate = 0.5f;
+        private float m_leftRotate = -90.0f;
+
+        private float m_leftTranslateZ = 5.4f;
+        private float m_rightTranslateZ = 6.4f;
         #endregion Atributi
 
         #region Properties
@@ -131,6 +155,78 @@ namespace AssimpSample
             set { m_height = value; }
         }
 
+        public float CameraX
+        {
+            get { return m_cameraX; }
+            set { m_cameraX = value; }
+        }
+
+        public float CameraY
+        {
+            get { return m_cameraY; }
+            set { m_cameraY = value; }
+        }
+
+        public float CameraZ
+        {
+            get { return m_cameraZ; }
+            set { m_cameraZ = value; }
+        }
+
+        public float PointZ
+        {
+            get { return m_pointZ; }
+            set { m_pointZ = value; }
+        }
+
+        public float AmbientRed
+        {
+            get { return m_ambientRed; }
+            set { m_ambientRed = value; }
+        }
+
+        public float AmbientGreen
+        {
+            get { return m_ambientGreen; }
+            set { m_ambientGreen = value; }
+        }
+
+        public float AmbientBlue
+        {
+            get { return m_ambientBlue; }
+            set { m_ambientBlue = value; }
+        }
+
+        public float LightTranslate
+        {
+            get { return m_lightTranslate; }
+            set { m_lightTranslate = value; }
+        }
+
+        public float RightTranslate
+        {
+            get { return m_rightTranslate; }
+            set { m_rightTranslate = value; }
+        }
+
+        public float LeftRotate
+        {
+            get { return m_leftRotate; }
+            set { m_leftRotate = value; }
+        }
+
+        public float LeftMoveForward
+        {
+            get { return m_leftTranslateZ; }
+            set { m_leftTranslateZ = value; }
+        }
+
+        public float RightMoveForward
+        {
+            get { return m_rightTranslateZ; }
+            set { m_rightTranslateZ = value; }
+        }
+
         #endregion Properties
 
         #region Konstruktori
@@ -144,6 +240,8 @@ namespace AssimpSample
             this.m_scene2 = new AssimpScene(scenePath2, sceneFileName2, gl);
             this.m_width = width;
             this.m_height = height;
+
+            m_textures = new uint[m_textureCount];
         }
 
         /// <summary>
@@ -170,6 +268,70 @@ namespace AssimpSample
             gl.Enable(OpenGL.GL_DEPTH_TEST);
             gl.Enable(OpenGL.GL_CULL_FACE);
 
+            // light
+            gl.Enable(OpenGL.GL_LIGHTING);
+
+            //tackasto
+            float[] ambientColour = { 0.1f, 0.1f, 0.0f, 1.0f };
+            float[] diffuseColour = { 0.097f, 0.98f, 0.61f, 1.0f };
+
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_AMBIENT, ambientColour);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_DIFFUSE, diffuseColour);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPOT_CUTOFF, 180.0f);
+            gl.Enable(OpenGL.GL_LIGHT0);
+
+            float[] position = { -10.0f, 6.0f, -26.0f, 1.0f };
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, position); 
+
+            // reflektorsko
+            float[] refAmbientColour = { m_ambientRed, m_ambientGreen, m_ambientBlue, 1.0f };
+            float[] refDiffuseColour = { 1.0f, 1.0f, 1.0f, 1.0f };
+            float[] direction = { 0.0f, -1.0f, 0.0f };
+
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_AMBIENT, refAmbientColour);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_DIFFUSE, refDiffuseColour);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_DIRECTION, direction);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_CUTOFF, 45.0f);
+
+            gl.Enable(OpenGL.GL_LIGHT1);
+
+            float[] refPosition = { 0.0f, 6.0f, m_lightTranslate, 1.0f };
+
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_POSITION, refPosition);
+
+            gl.Enable(OpenGL.GL_COLOR_MATERIAL);
+            gl.ColorMaterial(OpenGL.GL_FRONT, OpenGL.GL_AMBIENT_AND_DIFFUSE); 
+
+            gl.Enable(OpenGL.GL_NORMALIZE);
+
+            // texture
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_DECAL);
+            gl.GenTextures(m_textureCount, m_textures);
+            for(int i = 0; i < m_textureCount; ++i)
+            {
+                gl.BindTexture(OpenGL.GL_TEXTURE_2D, m_textures[i]);
+                Bitmap image = new Bitmap(m_textureImages[i]);
+                image.RotateFlip(RotateFlipType.RotateNoneFlipY);
+
+                Rectangle rectangle = new Rectangle(0, 0, image.Width, image.Height);
+                BitmapData bitmapData = image.LockBits(rectangle, System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                gl.Build2DMipmaps(OpenGL.GL_TEXTURE_2D, (int)OpenGL.GL_RGBA8, image.Width, image.Height, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, bitmapData.Scan0);
+
+                gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MIN_FILTER, OpenGL.GL_LINEAR);
+                gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MAG_FILTER, OpenGL.GL_LINEAR);
+
+                gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_S, OpenGL.GL_REPEAT);
+                gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_T, OpenGL.GL_REPEAT);
+
+                image.UnlockBits(bitmapData);
+                image.Dispose();
+            }
+
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
+
+
             m_scene.LoadScene();
             m_scene.Initialize();
 
@@ -186,7 +348,7 @@ namespace AssimpSample
 
             gl.LoadIdentity();
 
-            gl.LookAt(0.0f, 7.0f, 15.0f, 0.0f, 0.0f, -12.0f, 0.0f, 1.0f, 0.0f);
+            gl.LookAt(m_cameraX, m_cameraY, m_cameraZ, 0.0f, 0.0f, m_pointZ, 0.0f, 1.0f, 0.0f);
             gl.Translate(0.0f, 0.0f, -11.0f);
 
             gl.Rotate(m_xRotation, 1.0f, 0.0f, 0.0f);
@@ -194,41 +356,59 @@ namespace AssimpSample
 
 
             //surface
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.BindTexture(OpenGL.GL_TEXTURE_2D, m_textures[(int)Textures.Gravel]);
             gl.Begin(OpenGL.GL_QUADS);
             gl.Color(0.5f, 0.35f, 0.05f);
 
             gl.Normal(0.0f, 0.1f, 0.0f);
 
- 
+            gl.TexCoord(0.0f, 0.0f);
             gl.Vertex(-10.0f, 0.0f, 15.0f);
+            gl.TexCoord(0.0f, 10.0f);
             gl.Vertex(10.0f, 0.0f, 15.0f);
+            gl.TexCoord(10.0f, 10.0f);
             gl.Vertex(10.0f, 0.0f, -35.0f);
+            gl.TexCoord(10.0f, 0.0f);
             gl.Vertex(-10.0f, 0.0f, -35.0f);
 
             gl.End();
 
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
+
             //track
             gl.Translate(0.0f, 0.01f, 0.0f);
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.BindTexture(OpenGL.GL_TEXTURE_2D, m_textures[(int)Textures.Asphalt]);
             gl.Begin(OpenGL.GL_QUADS);
             gl.Color(0.5f, 0.5f, 0.5f);
 
             gl.Normal(0.0f, 0.1f, 0.0f);
 
+            gl.TexCoord(0.0f, 0.0f);
             gl.Vertex(-5.0f, 0.0f, 15.0f);
+            gl.TexCoord(0.0f, 4.0f);
             gl.Vertex(5.0f, 0.0f, 15.0f);
+            gl.TexCoord(4.0f, 4.0f);
             gl.Vertex(5.0f, 0.0f, -35.0f);
+            gl.TexCoord(4.0f, 0.0f);
             gl.Vertex(-5.0f, 0.0f, -35.0f);
 
             gl.End();
 
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
+
             //barriers
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.BindTexture(OpenGL.GL_TEXTURE_2D, m_textures[(int)Textures.Metal]);
+
             gl.PushMatrix();
             gl.Color(1.0f, 1.0f, 1.0f);
             gl.Translate(-8f, 0.5f, -10.0f);
             gl.Scale(0.10f, 0.5f, 25.0f);
 
             Cube leftBarrier = new Cube();
-            leftBarrier.Render(gl, SharpGL.SceneGraph.Core.RenderMode.Render);
+            leftBarrier.Render(gl, RenderMode.Render);
 
             gl.PopMatrix();
 
@@ -238,31 +418,45 @@ namespace AssimpSample
             gl.Scale(0.10f, 0.5f, 25.0f);
 
             Cube rightBarrier = new Cube();
-            rightBarrier.Render(gl, SharpGL.SceneGraph.Core.RenderMode.Render);
+            rightBarrier.Render(gl, RenderMode.Render);
 
             gl.PopMatrix();
+
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
 
             //formula cars
 
             //right
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_MODULATE);
+
             gl.PushMatrix();
-            gl.Translate(3.5f, 0.9f, 5.4f);
-            gl.Rotate(-90.0f, 0.0f, 180.0f);
-            gl.Scale(0.075f, 0.075f, 0.075f);
+            gl.Translate(m_rightTranslate, -0.1f, m_rightTranslateZ);
+            gl.Rotate(0.0f, 180.0f, 0.0f);
+            gl.Scale(0.05f, 0.05f, 0.05f);
 
             m_scene.Draw();
 
-            gl.PopMatrix(); 
+            gl.PopMatrix();
+
+            gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_DECAL);
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
 
             //left
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_MODULATE);
+
             gl.PushMatrix();
-            gl.Translate(-1.0f, 0.06f, 5.4f);
-            gl.Rotate(90.0f, 180.0f, 0.0f);
-            gl.Scale(0.0065f, 0.0065f, 0.0065f);
+            gl.Translate(-2.0f, 1.0f, m_leftTranslateZ);
+            gl.Rotate(0.0f, m_leftRotate, 0.0f);
+            gl.Scale(4.8f, 4.8f, 4.8f);
 
             m_scene2.Draw();
 
-            gl.PopMatrix(); 
+            gl.PopMatrix();
+
+            gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_DECAL);
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
 
 
             //text
@@ -299,6 +493,21 @@ namespace AssimpSample
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
             gl.LoadIdentity();                // resetuj ModelView Matrix
             gl.Viewport(0, 0, Width, Height);
+        }
+
+        public void Restart()
+        {
+            LeftMoveForward = 5.4f;
+            RightMoveForward = 6.4f;
+            RightTranslate = 0.5f;
+            LeftRotate = -90.0f;
+            CameraX = 0.0f;
+            CameraY = 7.0f;
+            CameraZ = 15.0f;
+            PointZ = -12.0f;
+            m_xRotation = 0.0f;
+            m_yRotation = 0.0f;
+            m_lightTranslate = 14.0f;
         }
 
         /// <summary>

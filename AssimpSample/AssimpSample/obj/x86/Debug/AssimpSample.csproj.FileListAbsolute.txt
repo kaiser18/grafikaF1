@@ -114,3 +114,34 @@ D:\Faks\7. semestar\RG\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSamp
 D:\Faks\7. semestar\RG\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.csprojAssemblyReference.cache
 D:\Faks\7. semestar\RG\Vezbe4\AssimpSample\AssimpSample\bin\Debug\3D Models\McLaren\McLaren_MP4.stl
 D:\Faks\7. semestar\RG\Vezbe4\AssimpSample\AssimpSample\bin\Debug\3D Models\Ferrari\F310.stl
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\AssimpLib\Assimp32.dll
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\AssimpLib\Assimp64.dll
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\AssimpLib\AssimpNet.dll
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\AssimpSample.exe.config
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\AssimpSample.exe
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\AssimpSample.pdb
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\AssimpNet.dll
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\SharpGL.dll
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\SharpGL.SceneGraph.dll
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\SharpGL.WPF.dll
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.csprojAssemblyReference.cache
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\MainWindow.baml
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\MainWindow.g.cs
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\App.g.cs
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample_Content.g.cs
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample_MarkupCompile.cache
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.g.resources
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.Properties.Resources.resources
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.csproj.GenerateResource.cache
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.csproj.CoreCompileInputs.cache
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.csproj.CopyComplete
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.exe
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.pdb
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\Textures\asphalt.jpg
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\Textures\gravel.jpg
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\Textures\metal.jpg
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\3D Models\Arrows\Arrows.3ds
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\3D Models\Ferrari\model.dae
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\3D Models\ferrari-f1\ferrari-f1-race-car.mtl
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\3D Models\ferrari-f1\ferrari-f1-race-car.obj
+C:\Users\kaise\Documents\GitHub\grafikaF1\AssimpSample\AssimpSample\bin\Debug\3D Models\Honda\HondaF13ds.3DS
