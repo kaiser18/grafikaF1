@@ -77,7 +77,7 @@ namespace AssimpSample
             }
             else
             {
-                m_world.CameraY += 7.0f;
+                m_world.CameraY += 10.0f;
             }
         }
 

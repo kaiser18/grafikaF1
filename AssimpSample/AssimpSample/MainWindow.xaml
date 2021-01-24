@@ -13,7 +13,7 @@
                 </StackPanel>
                 <StackPanel Margin="5" VerticalAlignment="Center">
                     <Label Content="Rotiranje levog bolida" HorizontalAlignment="Center"></Label>
-                    <Slider IsEnabled="{Binding AnimationNotActive}" Name="rotate" Maximum="360" Minimum="0" Value="0" TickPlacement="BottomRight" TickFrequency="5.0" IsSnapToTickEnabled="True" ValueChanged="RotationSlider_ValueChanged"></Slider>
+                    <Slider IsEnabled="{Binding AnimationNotActive}" Name="rotate" Maximum="270" Minimum="-90" Value="-90" TickPlacement="BottomRight" TickFrequency="5.0" IsSnapToTickEnabled="True" ValueChanged="RotationSlider_ValueChanged"></Slider>
                 </StackPanel>
                 <StackPanel Margin="5" VerticalAlignment="Center">
                     <Label Content="Boja ambijentane komponente" HorizontalAlignment="Center"></Label>

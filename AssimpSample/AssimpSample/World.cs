@@ -283,26 +283,6 @@ namespace AssimpSample
             float[] position = { -10.0f, 6.0f, -26.0f, 1.0f };
             gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, position); 
 
-            // reflektorsko
-            float[] refAmbientColour = { m_ambientRed, m_ambientGreen, m_ambientBlue, 1.0f };
-            float[] refDiffuseColour = { 1.0f, 1.0f, 1.0f, 1.0f };
-            float[] direction = { 0.0f, -1.0f, 0.0f };
-
-            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_AMBIENT, refAmbientColour);
-            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_DIFFUSE, refDiffuseColour);
-            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_DIRECTION, direction);
-            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_CUTOFF, 45.0f);
-
-            gl.Enable(OpenGL.GL_LIGHT1);
-
-            float[] refPosition = { 0.0f, 6.0f, m_lightTranslate, 1.0f };
-
-            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_POSITION, refPosition);
-
-            gl.Enable(OpenGL.GL_COLOR_MATERIAL);
-            gl.ColorMaterial(OpenGL.GL_FRONT, OpenGL.GL_AMBIENT_AND_DIFFUSE); 
-
-            gl.Enable(OpenGL.GL_NORMALIZE);
 
             // texture
             gl.Enable(OpenGL.GL_TEXTURE_2D);
@@ -353,6 +333,27 @@ namespace AssimpSample
 
             gl.Rotate(m_xRotation, 1.0f, 0.0f, 0.0f);
             gl.Rotate(m_yRotation, 0.0f, 1.0f, 0.0f);
+
+            // reflektorsko
+            float[] refAmbientColour = { m_ambientRed, m_ambientGreen, m_ambientBlue, 1.0f };
+            float[] refDiffuseColour = { 1.0f, 1.0f, 1.0f, 1.0f };
+            float[] direction = { 0.0f, -1.0f, 0.0f };
+
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_AMBIENT, refAmbientColour);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_DIFFUSE, refDiffuseColour);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_DIRECTION, direction);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_CUTOFF, 45.0f);
+
+            gl.Enable(OpenGL.GL_LIGHT1);
+
+            float[] refPosition = { 0.0f, 6.0f, m_lightTranslate, 1.0f };
+
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_POSITION, refPosition);
+
+            gl.Enable(OpenGL.GL_COLOR_MATERIAL);
+            gl.ColorMaterial(OpenGL.GL_FRONT, OpenGL.GL_AMBIENT_AND_DIFFUSE);
+
+            gl.Enable(OpenGL.GL_NORMALIZE);
 
 
             //surface
